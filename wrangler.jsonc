@@ -12,5 +12,10 @@
       "database_name": "gani-the-clone-production",
       "database_id": "73cb6030-369d-4129-8848-c26209169642"
     }
-  ]
+  ],
+
+  // Workers AI binding for LLM
+  "ai": {
+    "binding": "AI"
+  }
 }
