@@ -20,11 +20,11 @@
 
 ## 🌐 URLs
 
-- **Local Development**: http://localhost:3000
-- **Sandbox**: https://3000-ieu10na8d6nvg8t70i0t1-b9b802c4.sandbox.novita.ai
-- **Production**: https://dcc0d5bb.gani-the-clone.pages.dev
-- **Webhook Endpoint**: https://dcc0d5bb.gani-the-clone.pages.dev/api/webhook/whatsapp
+- **Production**: https://d3e0e018.gani-the-clone.pages.dev
+- **Webhook Endpoint**: https://d3e0e018.gani-the-clone.pages.dev/api/webhook/whatsapp
 - **GitHub Repository**: https://github.com/Estes786/clone-my-slf.1.git
+- **Database**: gani-the-clone-production (73cb6030-369d-4129-8848-c26209169642)
+- **Status**: ✅ DEPLOYED & READY
 
 ## 🏗️ Data Architecture
 
