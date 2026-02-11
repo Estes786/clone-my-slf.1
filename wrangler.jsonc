@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "webapp",
+  "name": "gani-the-clone",
   "compatibility_date": "2024-01-01",
   "pages_build_output_dir": "./dist",
   "compatibility_flags": ["nodejs_compat"],
@@ -9,8 +9,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "barber-ai-production",
-      "database_id": "a4b6b9ad-724e-42b2-b537-29072fc7d8e8"
+      "database_name": "gani-the-clone-production",
+      "database_id": "73cb6030-369d-4129-8848-c26209169642"
     }
   ]
 }

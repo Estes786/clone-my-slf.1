@@ -76,6 +76,22 @@ app.post('/api/webhook/whatsapp', async (c) => {
     // Log incoming webhook (untuk debugging)
     console.log('Webhook received:', JSON.stringify(body, null, 2))
     
+    // ✅ FIX: Pastikan environment bindings tersedia
+    if (!c.env?.DB) {
+      console.error('DB binding not available')
+      return c.json({ error: 'Database not configured' }, 500)
+    }
+
+    if (!c.env?.AI) {
+      console.error('AI binding not available')
+      return c.json({ error: 'AI not configured' }, 500)
+    }
+
+    if (!c.env?.WA_TOKEN) {
+      console.error('WA_TOKEN not configured')
+      return c.json({ error: 'WhatsApp token not configured' }, 500)
+    }
+    
     // Handle incoming call - Auto Reply
     if (body.type === 'incoming_call' || body.event === 'call') {
       const fromNumber = body.from || body.phone_number
@@ -108,12 +124,18 @@ app.post('/api/webhook/whatsapp', async (c) => {
         return c.json({ success: true, message: 'No text content' })
       }
       
-      // Check role from database
-      const contact = await c.env.DB.prepare(
-        'SELECT role_type FROM contacts WHERE phone_number = ?'
-      ).bind(fromNumber).first()
-      
-      const role = contact?.role_type || 'CUSTOMER'
+      // ✅ FIX: Check role from database dengan proper error handling
+      let role = 'CUSTOMER'
+      try {
+        const contact = await c.env.DB.prepare(
+          'SELECT role_type FROM contacts WHERE phone_number = ?'
+        ).bind(fromNumber).first()
+        
+        role = contact?.role_type || 'CUSTOMER'
+      } catch (dbError: any) {
+        console.error('Database error:', dbError)
+        // Lanjutkan dengan default role jika DB error
+      }
       
       // Get system prompt based on role
       const systemPrompt = getSystemPrompt(role)
@@ -141,10 +163,15 @@ app.post('/api/webhook/whatsapp', async (c) => {
         })
       })
       
-      // Log conversation to database
-      await c.env.DB.prepare(
-        'INSERT INTO conversations (phone_number, role_type, message_in, message_out, timestamp) VALUES (?, ?, ?, ?, ?)'
-      ).bind(fromNumber, role, messageText, replyText, new Date().toISOString()).run()
+      // ✅ FIX: Log conversation dengan error handling
+      try {
+        await c.env.DB.prepare(
+          'INSERT INTO conversations (phone_number, role_type, message_in, message_out, timestamp) VALUES (?, ?, ?, ?, ?)'
+        ).bind(fromNumber, role, messageText, replyText, new Date().toISOString()).run()
+      } catch (dbError: any) {
+        console.error('Failed to log conversation:', dbError)
+        // Tidak throw error, biarkan response tetap sukses
+      }
       
       return c.json({ success: true, message: 'Message processed 🙏🏻' })
     }
@@ -152,7 +179,7 @@ app.post('/api/webhook/whatsapp', async (c) => {
     return c.json({ success: true, message: 'Webhook received' })
   } catch (error: any) {
     console.error('Webhook error:', error)
-    return c.json({ error: error.message }, 500)
+    return c.json({ error: error.message || 'Internal server error' }, 500)
   }
 })
 

@@ -1,9 +1,9 @@
 module.exports = {
   apps: [
     {
-      name: 'webapp',
+      name: 'gani-the-clone',
       script: 'npx',
-      args: 'wrangler pages dev dist --ip 0.0.0.0 --port 3000 --d1=barber-ai-production --local',
+      args: 'wrangler pages dev dist --ip 0.0.0.0 --port 3000 --d1=gani-the-clone-production --local',
       env: {
         NODE_ENV: 'development',
         PORT: 3000
