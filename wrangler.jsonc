@@ -9,8 +9,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "webapp-production",
-      "database_id": "to-be-created"
+      "database_name": "barber-ai-production",
+      "database_id": "a4b6b9ad-724e-42b2-b537-29072fc7d8e8"
     }
   ]
 }
